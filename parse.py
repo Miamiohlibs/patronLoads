@@ -20,8 +20,7 @@ def parse():
     
     #need to parse the first row in each array
     for i in b :
-        i = str.split(i[0], 'none   ')
+        i = str.split(i[0], 'none   ')#doesn't work; find alternate
 
-    #continuing trying to split first array using 
-    #shouldn't need to add json array keys; add those as part of the api put call
-    
+   #shouldn't need to store split array; 
+   #use array slices during writing to schema
