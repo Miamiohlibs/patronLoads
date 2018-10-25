@@ -1,5 +1,6 @@
 import os, csv
 import numpy as np
+from jsonschema import validate
 
 def parse():
     import csv
@@ -18,9 +19,10 @@ def parse():
     #remove trailing white space
     b = np.char.rstrip(b, ' ')
     
-    #need to parse the first row in each array
-    for i in b :
-        i = str.split(i[0], 'none   ')#doesn't work; find alternate
-
-   #shouldn't need to store split array; 
-   #use array slices during writing to schema
+    #shouldn't need to store post-split array; 
+    #use array slices during writing to schema
+    #for i in b:
+    #    slice = i[0][15:]
+    #    np.insert(i,0,slice)
+    
+    #outputs new np array but inserting the expirationDate as an additional array slice
