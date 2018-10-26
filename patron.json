@@ -1,0 +1,16 @@
+{
+  "expirationDate": "string",
+  "patronType": "integer",
+  "patronCodes": {
+    "pcode1": "integer",
+    "pcode2": "integer",
+    "pcode3": "integer",
+  },
+  "varFields": [
+    {
+      "fieldTag": "char",
+      "content": "string"
+    }
+
+  ]
+}
