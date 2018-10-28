@@ -28,12 +28,13 @@ def parse():
     for i in b:
         ##determine what location in the patron leader field for the following
         ##patron fields
+        patron["expirationDate"] = i[0][16:]
         patron["patronType"] = i[0][]
+        patron["patronCodes"] = {}
         patron["patronCodes"]["pcode1"] = i[0][]
         patron["patronCodes"]["pcode2"] = i[0][]
         patron["patronCodes"]["pcode3"] = i[0][]
 
-        patron["expirationDate"] = i[0][16:]
         plus = {"fieldTag":"b","content":i[9][1:]}
         barcode = {"fieldTag":"b","content":i[10][1:]}
         soc = {"fieldTag":"s","content":i[6][1:]}
