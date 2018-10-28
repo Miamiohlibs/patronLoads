@@ -28,19 +28,35 @@ def parse():
 
     #outputs new np array but inserting the expirationDate as an additional array slice
     patron = {}
+    schema = {
+          "expirationDate": "string",
+          "patronType": "integer",
+          "patronCodes": {
+            "pcode1": "integer",
+            "pcode2": "integer",
+            "pcode3": "integer",
+          },
+          "varFields": [
+            {
+              "fieldTag": "char",
+              "content": "string"
+            }
+
+          ]
+        }
 
     for i in b:
         ##determine what location in the patron leader field for the following
         ##patron fields
 
-        #building patron json file for each 11 row patron record from csv
+        #building patron json file for each 11 row patron record from patron.csv
         patron["expirationDate"] = i[0][16:]
         patron["patronType"] = i[0][]
         patron["patronCodes"] = {}
         patron["patronCodes"]["pcode1"] = i[0][]
         patron["patronCodes"]["pcode2"] = i[0][]
         patron["patronCodes"]["pcode3"] = i[0][]
-
+        #fieldTags
         plus = {"fieldTag":"b","content":i[9][1:]}
         barcode = {"fieldTag":"b","content":i[10][1:]}
         soc = {"fieldTag":"s","content":i[6][1:]}
@@ -54,8 +70,9 @@ def parse():
         patron["varFields"] = [plus,barcode,soc,uniqueId,email,address,home,name,campusPhone,phone]
         #print(patron)
 
-        #validate json schema
-
+        #validate json schema; look for raised exception
+        #if
+        validate(patron,schema)
 
         #lookup to see if this is a new patron
 
