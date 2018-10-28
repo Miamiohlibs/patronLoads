@@ -2,6 +2,10 @@ import os, csv
 import numpy as np
 from jsonschema import validate #use to validate each array slice writing to api
 
+##the purpose of this file is to parse a basic tsv patron file given to a
+##library from central IT containing all of the patrons into json api calls
+##to the Sierra patron api
+
 def parse():
     datafile = open('patrons.csv', 'r')
     datareader = csv.reader(datafile, delimiter='\n')
@@ -28,6 +32,8 @@ def parse():
     for i in b:
         ##determine what location in the patron leader field for the following
         ##patron fields
+
+        #building patron json file for each 11 row patron record from csv
         patron["expirationDate"] = i[0][16:]
         patron["patronType"] = i[0][]
         patron["patronCodes"] = {}
@@ -47,3 +53,16 @@ def parse():
         phone = {"fieldTag":"p","content":i[5][1:]}
         patron["varFields"] = [plus,barcode,soc,uniqueId,email,address,home,name,campusPhone,phone]
         #print(patron)
+
+        #validate json schema
+
+
+        #lookup to see if this is a new patron
+
+
+        #if patron is not located write to create application
+
+
+        #if patron is found retrieve Sierra patron ID number
+        #preprend Sierra patron ID to the beginning of the patron json file
+        #then write to Sierra update patron API
