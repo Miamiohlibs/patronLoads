@@ -26,20 +26,23 @@ def parse():
     patron = {}
 
     for i in b:
-        patron["expirationDate"] = i[0][16:]
+        ##determine what location in the patron leader field for the following
+        ##patron fields
         patron["patronType"] = i[0][]
         patron["patronCodes"]["pcode1"] = i[0][]
         patron["patronCodes"]["pcode2"] = i[0][]
         patron["patronCodes"]["pcode3"] = i[0][]
-        patron["varFields"] = [{"fieldTag":"b","content":i[9][1:]}] 
-        tap = i[10][1:]
-        soc = i[6][1:]
-        uniqueId = i[8][1:]
-        email = i[7][1:]
-        address = i[2][1:]
-        home = i[4][1:]
-        name = i[1][1:]
-        campusPhone = i[3][1:]
-        phone = i[5][1:]
 
-        {'expirationDate': '2019-07-01', 'patronType': 2, 'patronCodes': {'pcode1': '8', 'pcode2': '0', 'pcode3': 0}, 'varFields': [{'fieldTag': 'b', 'content': '+01620000'}, {'fieldTag': 'b', 'content': '987000123456789'}, {'fieldTag': 's', 'content': '+01600000'}, {'fieldTag': 'u', 'content': 'uniqueId'}, {'fieldTag': 'z', 'content': 'student@miamioh.edu'}, {'fieldTag': 'a', 'content': 'LIBRARY, KING$CAMPUS MAIL OH 00000'}, {'fieldTag': 'h', 'content': '1059 Street AVE$Dayton OH 45377-1471'}, {'fieldTag': 'n', 'content': 'Zmuda Bob'}, {'fieldTag': 't', 'content': '513529000'}, {'fieldTag': 'p', 'content': '937232000'}]}
+        patron["expirationDate"] = i[0][16:]
+        plus = {"fieldTag":"b","content":i[9][1:]}
+        barcode = {"fieldTag":"b","content":i[10][1:]}
+        soc = {"fieldTag":"s","content":i[6][1:]}
+        uniqueId = {"fieldTag":"u","content":i[8][1:]}
+        email = {"fieldTag":"z","content":i[7][1:]}
+        address = {"fieldTag":"a","content":i[2][1:]}
+        home = {"fieldTag":"h","content":i[4][1:]}
+        name = {"fieldTag":"n","content":i[1][1:]}
+        campusPhone = {"fieldTag":"t","content":i[3][1:]}
+        phone = {"fieldTag":"p","content":i[5][1:]}
+        patron["varFields"] = [plus,barcode,soc,uniqueId,email,address,home,name,campusPhone,phone]
+        #print(patron)
