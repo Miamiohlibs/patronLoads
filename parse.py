@@ -51,11 +51,11 @@ def parse():
 
         #building patron json file for each 11 row patron record from patron.csv
         patron["expirationDate"] = i[0][16:]
-        patron["patronType"] = i[0][]
-        patron["patronCodes"] = {}
-        patron["patronCodes"]["pcode1"] = i[0][]
-        patron["patronCodes"]["pcode2"] = i[0][]
-        patron["patronCodes"]["pcode3"] = i[0][]
+        patron["patronType"] = i[0][3] #0002
+        patron["patronCodes"] = {} #will be filled below
+        patron["patronCodes"]["pcode1"] = i[0][4] #00028
+        patron["patronCodes"]["pcode2"] = i[0][5] #000031
+        patron["patronCodes"]["pcode3"] = i[0][6]
         #fieldTags
         plus = {"fieldTag":"b","content":i[9][1:]}
         barcode = {"fieldTag":"b","content":i[10][1:]}
@@ -69,13 +69,14 @@ def parse():
         phone = {"fieldTag":"p","content":i[5][1:]}
         patron["varFields"] = [plus,barcode,soc,uniqueId,email,address,home,name,campusPhone,phone]
         #print(patron)
-
+        print(patron)
         #validate json schema; look for raised exception
         #if
         validate(patron,schema)
 
-        #lookup to see if this is a new patron
-
+        #lookup to see if this is a new patron; %2b is the + symbol converted, add the soc
+        url = "https://holmes.lib.miamioh.edu:443/iii/sierra-api/v4/patrons/find?varFieldTag=s&varFieldContent={}".format(i[6][1:])
+        #need to url encode url
 
         #if patron is not located write to create application
 
