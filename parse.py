@@ -1,6 +1,7 @@
 import os, csv
 import numpy as np
 from jsonschema import validate #use to validate each array slice writing to api
+import get_token
 
 ##the purpose of this file is to parse a basic tsv patron file given to a
 ##library from central IT containing all of the patrons into json api calls
@@ -28,6 +29,7 @@ def parse():
 
     #outputs new np array but inserting the expirationDate as an additional array slice
     patron = {}
+    #add more to schema for length of integers/char
     schema = {
           "expirationDate": "string",
           "patronType": "integer",
@@ -74,13 +76,15 @@ def parse():
         #if
         validate(patron,schema)
 
-        #lookup to see if this is a new patron; %2b is the + symbol converted, add the soc
-        url = "https://holmes.lib.miamioh.edu:443/iii/sierra-api/v4/patrons/find?varFieldTag=s&varFieldContent={}".format(i[6][1:])
-        #need to url encode url
 
-        #if patron is not located write to create application
+            #lookup to see if this is a new patron; %2b is the + symbol converted, add the soc
+            url = "https://holmes.lib.miamioh.edu:443/iii/sierra-api/v4/patrons/find?varFieldTag=s&varFieldContent={}".format(i[6][1:])
+            #need to url encode url
 
+            #if patron is found retrieve Sierra patron ID number
+            #preprend Sierra patron ID to the beginning of the patron json file
+            #then write to Sierra update patron API
+            url = "https://holmes.lib.miamioh.edu:443/iii/sierra-api/v4/patrons/{}".format(SierraPatronID)
 
-        #if patron is found retrieve Sierra patron ID number
-        #preprend Sierra patron ID to the beginning of the patron json file
-        #then write to Sierra update patron API
+            #if patron is not located write to create application
+            url = "https://holmes.lib.miamioh.edu:443/iii/sierra-api/v4/patrons/"

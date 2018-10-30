@@ -1,4 +1,6 @@
 *.ptfs
 *.swp
 *.csv
+get_token.py
+*.lock
 
