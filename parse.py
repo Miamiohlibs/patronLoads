@@ -1,7 +1,7 @@
 import os, csv
 import numpy as np
 from jsonschema import validate  #use to validate each array slice writing to api
-import urllib.parse import urlparse  #url encoding
+from urllib.parse import urlparse  #url encoding
 from get_token import get_token
 
 ##the purpose of this file is to parse a basic tsv patron file given to a
@@ -18,6 +18,10 @@ def parse():
     for row in datareader:
         data.append(row)
     datafile.close()
+
+    ##need some other loader
+    datafile = open('patron.json', 'r')
+    schema = json.load(datafile)
 
     b = np.reshape(data, (-1,11))  #reshapes as nested array on 11 columns each
     #remove trailing white space; no need to reshape or trim since we can do this during schema write
@@ -82,9 +86,10 @@ def parse():
 
 
             #lookup to see if this is a new patron; %2b is the + symbol converted, add the soc
-        url = "https://holmes.lib.miamioh.edu:443/iii/sierra-api/v4/patrons/find?varFieldTag=s&varFieldContent=%2b{}".format(i[6][2:]))
+        url = "https://holmes.lib.miamioh.edu:443/iii/sierra-api/v4/patrons/find?varFieldTag=s&varFieldContent=%2b{}".format(i[6][2:])
             #need to url encode url
             #response = requests.get(url, headers=headers, params=querystring)
+        ##https://github.com/requests/requests/blob/master/requests/status_codes.py
         response = requests.get(url, headers = headers)
         if response.status_code == requests.codes.ok:  #write patron ID response
             id = response.json()["id"]
@@ -97,6 +102,7 @@ def parse():
             url = "https://holmes.lib.miamioh.edu:443/iii/sierra-api/v4/patrons/"
             response = requests.post(url, headers=headers, json=patron)
 
-        ##do i need another elif for error logging
+        ##do i need another elif for error logging?
+        ## some requests seem to be hanging; may need to cleanup those requests
 
 #parse()
