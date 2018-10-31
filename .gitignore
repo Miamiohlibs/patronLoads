@@ -1,7 +1,6 @@
 *.ptfs
 *.swp
 *.csv
-*.lock
 
 get_token.py
 get_bass.py
