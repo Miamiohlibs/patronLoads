@@ -1,16 +1,38 @@
 {
-  "expirationDate": "string",
-  "patronType": "integer",
-  "patronCodes": {
-    "pcode1": "integer",
-    "pcode2": "integer",
-    "pcode3": "integer",
-  },
-  "varFields": [
-    {
-      "fieldTag": "char",
-      "content": "string"
-    }
+    "title": "Patron",
+    "type": "array",
 
-  ]
+    "properties": {
+
+        "expirationDate": {
+            "type": "string",
+            "maxLength": "10"
+            "description": "yyyy-mm-dd their patron record expires"
+        },
+        "patronType": {
+            "type": "integer",
+            "description": ""
+        },
+        "patronCodes": {
+            "pcode1": {
+                "type": "integer",
+                "description": ""
+            },
+            "pcode2": {
+                "type": "integer",
+                "description": ""
+            },
+            "pcode3": {
+                "type": "integer",
+                "description": ""
+            },
+        },
+        "varFields": [
+            {
+            "fieldTag": "char",
+            "content": "string"
+            }
+
+        ]
+    }
 }
