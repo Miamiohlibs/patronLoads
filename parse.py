@@ -77,12 +77,12 @@ def parse():
         validate(patron,schema)
 
         #begin api call
-headers = {
-    'authorization': str(get_token()),
-    'cache-control': "no-cache",
-    'postman-token': "715478e1-10c5-8bc7-7758-415c1be73131",
-    'content-type': "application/json"
-}
+    headers = {
+        'authorization': str(get_token()),
+        'cache-control': "no-cache",
+        'postman-token': "715478e1-10c5-8bc7-7758-415c1be73131",
+        'content-type': "application/json"
+    }
 
 
             #lookup to see if this is a new patron; %2b is the + symbol converted, add the soc
