@@ -1,4 +1,4 @@
-import os, csv
+import os, csv, requests, time
 import numpy as np
 from jsonschema import validate  #use to validate each array slice writing to api
 from urllib.parse import urlparse  #url encoding
@@ -77,12 +77,12 @@ def parse():
         validate(patron,schema)
 
         #begin api call
-        headers = {
-            'authorization': str(get_token()),
-            'cache-control': "no-cache",
-            'postman-token': "715478e1-10c5-8bc7-7758-415c1be73131",
-            'content-type': "application/json"
-        }
+headers = {
+    'authorization': str(get_token()),
+    'cache-control': "no-cache",
+    'postman-token': "715478e1-10c5-8bc7-7758-415c1be73131",
+    'content-type': "application/json"
+}
 
 
             #lookup to see if this is a new patron; %2b is the + symbol converted, add the soc
@@ -104,5 +104,27 @@ def parse():
 
         ##do i need another elif for error logging?
         ## some requests seem to be hanging; may need to cleanup those requests
+
+
+def loop():  ##loop for testing the response time update api
+    url = "https://holmes.lib.miamioh.edu:443/iii/sierra-api/v4/patrons/1306450"
+    #patron = {}
+
+    looperCPU = 10
+    start_time = time.time()
+    counter= 0
+    while(looperCPU != 0):
+        for i in range(5):
+            response = requests.put(url, headers=headers, json=patron)
+            #print(i)
+            #print(response)
+            end_time = time.time()
+            #print("total time taken this loop: ", end_time - start_time)
+            counter+=1
+            #print(counter)
+        looperCPU -= 1
+        print("total time taken this loop: ", end_time - start_time)
+
+    ##on average, this writes 50 patrons in 40 seconds to the patron API
 
 #parse()
