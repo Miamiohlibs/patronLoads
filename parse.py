@@ -46,6 +46,12 @@ def parse():
 
           ]
         }
+    headers = {
+        'authorization': str(get_token()),
+        'cache-control': "no-cache",
+        'postman-token': "715478e1-10c5-8bc7-7758-415c1be73131",
+        'content-type': "application/json"
+    }
 
     for i in b:
         ##determine what location in the patron leader field for the following
@@ -77,12 +83,8 @@ def parse():
         validate(patron,schema)
 
         #begin api call
-    headers = {
-        'authorization': str(get_token()),
-        'cache-control': "no-cache",
-        'postman-token': "715478e1-10c5-8bc7-7758-415c1be73131",
-        'content-type': "application/json"
-    }
+        #after talking to Pat we should potential try to pull down the entire
+        #Sierra patron database, comparing and only writing as necessary
 
 
             #lookup to see if this is a new patron; %2b is the + symbol converted, add the soc
