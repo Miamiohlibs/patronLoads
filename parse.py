@@ -20,8 +20,8 @@ def parse():
     datafile.close()
 
     ##need some other loader
-    datafile = open('patron.json', 'r')
-    schema = json.load(datafile)
+    # datafile = open('patron.json', 'r')
+    # schema = json.load(datafile)
 
     b = np.reshape(data, (-1,11))  #reshapes as nested array on 11 columns each
     #remove trailing white space; no need to reshape or trim since we can do this during schema write
@@ -88,21 +88,32 @@ def parse():
 
 
             #lookup to see if this is a new patron; %2b is the + symbol converted, add the soc
-        url = "https://holmes.lib.miamioh.edu:443/iii/sierra-api/v4/patrons/find?varFieldTag=s&varFieldContent=%2b{}".format(i[6][2:])
-            #need to url encode url
-            #response = requests.get(url, headers=headers, params=querystring)
-        ##https://github.com/requests/requests/blob/master/requests/status_codes.py
-        response = requests.get(url, headers = headers)
-        if response.status_code == requests.codes.ok:  #write patron ID response
-            id = response.json()["id"]
-            url = "https://holmes.lib.miamioh.edu:443/iii/sierra-api/v4/patrons/{}".format(id)
+        url = "https://holmes.lib.miamioh.edu:443/iii/sierra-api/v4/patrons/find?varFieldTag=s&varFieldContent=%2b{}&fields=expirationDate%2CpatronType%2CpatronCodes%2CvarFields".format(i[6][2:])
+        #     #need to url encode url
+        response = requests.get(url, headers=headers)
+        print(response)
+        print(response.json())
 
-            #then write to Sierra update patron API
-            response = requests.put(url, headers=headers, json=patron)
-            #if response.raise_for_status() == ''
-        elif response.status_code == requests.codes.not_found:  #post new patron
-            url = "https://holmes.lib.miamioh.edu:443/iii/sierra-api/v4/patrons/"
-            response = requests.post(url, headers=headers, json=patron)
+        if response.status_code = requests.codes.ok: #
+            patron["id"] = response.json["id"]
+            if patron == response.json:
+                #end one cycle of for loop but not entire loop
+
+                #2018-11-05 continue comparing response; only write deltas to api
+
+
+        # ##https://github.com/requests/requests/blob/master/requests/status_codes.py
+        # response = requests.get(url, headers = headers)
+        # if response.status_code == requests.codes.ok:  #write patron ID response
+        #     id = response.json()["id"]
+        #     url = "https://holmes.lib.miamioh.edu:443/iii/sierra-api/v4/patrons/{}".format(id)
+        #
+        #     #then write to Sierra update patron API
+        #     response = requests.put(url, headers=headers, json=patron)
+        #     #if response.raise_for_status() == ''
+        # elif response.status_code == requests.codes.not_found:  #post new patron
+        #     url = "https://holmes.lib.miamioh.edu:443/iii/sierra-api/v4/patrons/"
+        #     response = requests.post(url, headers=headers, json=patron)
 
         ##do i need another elif for error logging?
         ## some requests seem to be hanging; may need to cleanup those requests
