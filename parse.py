@@ -27,6 +27,8 @@ def parse():
     #remove trailing white space; no need to reshape or trim since we can do this during schema write
     b = np.char.rstrip(b, ' ')
 
+    #count = total number of objects in patron array
+
     #outputs new np array but inserting the expirationDate as an additional array slice
     patron = {}
     #add more to schema for length of integers/char
@@ -53,53 +55,57 @@ def parse():
         'content-type': "application/json"
     }
 
-    for i in b:
-        ##determine what location in the patron leader field for the following
-        ##patron fields
-
-        #building patron json file for each 11 row patron record from patron.csv
-        patron["expirationDate"] = i[0][16:]
-        patron["patronType"] = i[0][3]  #0002
-        patron["patronCodes"] = {}  #will be filled below
-        patron["patronCodes"]["pcode1"] = i[0][4]  #00028
-        patron["patronCodes"]["pcode2"] = i[0][5]  #000031
-        patron["patronCodes"]["pcode3"] = i[0][6]
-        #fieldTags
-        plus = {"fieldTag":"b","content":i[9][1:]}
-        barcode = {"fieldTag":"b","content":i[10][1:]}
-        soc = {"fieldTag":"s","content":i[6][1:]}
-        uniqueId = {"fieldTag":"u","content":i[8][1:]}
-        email = {"fieldTag":"z","content":i[7][1:]}
-        address = {"fieldTag":"a","content":i[2][1:]}
-        home = {"fieldTag":"h","content":i[4][1:]}
-        name = {"fieldTag":"n","content":i[1][1:]}
-        campus = {"fieldTag":"t","content":i[3][1:]}
-        phone = {"fieldTag":"p","content":i[5][1:]}
-        patron["varFields"] = [plus,barcode,soc,uniqueId,email,address,home,name,campus,phone]
-        #print(patron)
-        print(patron)
-        #validate json schema; look for raised exception
-        #if
-        validate(patron,schema)
-
-        #begin api call
-        #after talking to Pat we should potential try to pull down the entire
-        #Sierra patron database, comparing and only writing as necessary
-
-
-            #lookup to see if this is a new patron; %2b is the + symbol converted, add the soc
-        url = "https://holmes.lib.miamioh.edu:443/iii/sierra-api/v4/patrons/find?varFieldTag=s&varFieldContent=%2b{}&fields=expirationDate%2CpatronType%2CpatronCodes%2CvarFields".format(i[6][2:])
-        #     #need to url encode url
-        response = requests.get(url, headers=headers)
-        print(response)
-        print(response.json())
-
-        if response.status_code = requests.codes.ok: #
-            patron["id"] = response.json["id"]
-            if patron == response.json:
-                #end one cycle of for loop but not entire loop
-
-                #2018-11-05 continue comparing response; only write deltas to api
+for i in b:
+    ##determine what location in the patron leader field for the following
+    ##patron fields
+    #building patron json file for each 11 row patron record from patron.csv
+    patron["expirationDate"] = i[0][16:]   #reformat date to yyyy-mm-dd
+    patron["patronType"] = i[0][3]  #0002
+    patron["patronCodes"] = {}  #will be filled below
+    patron["patronCodes"]["pcode1"] = i[0][4]  #00028
+    patron["patronCodes"]["pcode2"] = i[0][5]  #000031
+    patron["patronCodes"]["pcode3"] = i[0][6]
+    #fieldTags
+    plus = {"fieldTag":"b","content":i[9][1:]}
+    barcode = {"fieldTag":"b","content":i[10][1:]}
+    soc = {"fieldTag":"s","content":i[6][1:]}
+    uniqueId = {"fieldTag":"u","content":i[8][1:]}
+    email = {"fieldTag":"z","content":i[7][1:]}
+    address = {"fieldTag":"a","content":i[2][1:]}
+    home = {"fieldTag":"h","content":i[4][1:]}
+    name = {"fieldTag":"n","content":i[1][1:]}
+    campus = {"fieldTag":"t","content":i[3][1:]}
+    phone = {"fieldTag":"p","content":i[5][1:]}
+    patron["varFields"] = [plus,barcode,soc,uniqueId,email,address,home,name,campus,phone]
+    #print(patron)
+    print(patron)
+    #validate json schema; look for raised exception
+    #if
+    validate(patron,schema)
+    #begin api call
+    #after talking to Pat we should potential try to pull down the entire
+    #Sierra patron database, comparing and only writing as necessary
+        #lookup to see if this is a new patron; %2b is the + symbol converted, add the soc
+    url = "https://holmes.lib.miamioh.edu:443/iii/sierra-api/v4/patrons/find?varFieldTag=s&varFieldContent=%2b{}&fields=expirationDate%2CpatronType%2CpatronCodes%2CvarFields".format(i[6][2:])
+    #     #need to url encode url
+    response = requests.get(url, headers=headers)
+    print(response)
+    print(response.json())
+    #
+    if response.status_code == requests.codes.ok:  #
+        patron["id"] = response.json()["id"]  #id needs to be first in array; reformat expirationDate
+        if patron == response.json():
+            #end one cycle of for loop but not entire loop
+            print("no changes to write")
+            continue
+        #2018-11-05 continue comparing response; only write deltas to api
+        else:
+            print("writing deltas")
+            delta = {}
+            delta["id"] = patron["id"]
+            print(delta)
+        #else:
+            #write to create api
 
 
         # ##https://github.com/requests/requests/blob/master/requests/status_codes.py
