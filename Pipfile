@@ -6,7 +6,7 @@ name = "pypi"
 [packages]
 jsonschema = "*"
 Pipfile = "*"
-requests = "2.19.1"
+requests = "*"
 
 [dev-packages]
 
