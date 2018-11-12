@@ -60,7 +60,8 @@ def parse():
         ##determine what location in the patron leader field for the following
         ##patron fields
         #building patron json file for each 11 row patron record from patron.csv
-        patron["expirationDate"] = i[0][16:]   #reformat date to yyyy-mm-dd
+        patron['expirationDate'] = datetime.strftime((datetime.strptime(i[0][16:], '%m-%d-%y')), '%Y-%m-%d')
+            #reformatting date
         patron["patronType"] = i[0][3]  #0002
         patron["patronCodes"] = {}  #will be filled below
         patron["patronCodes"]["pcode1"] = i[0][4]  #00028
