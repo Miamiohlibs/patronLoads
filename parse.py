@@ -11,7 +11,11 @@ from datetime import datetime
 
 
 def parse():
-    datafile = open('patrons.csv', 'r')
+    try:
+        datafile = open('patrons.csv', 'r')
+    except:
+        raise Exception('could not read patron')
+
     datareader = csv.reader(datafile, delimiter='\n')
     data = []
 
@@ -55,6 +59,7 @@ def parse():
         'postman-token': "715478e1-10c5-8bc7-7758-415c1be73131",
         'content-type': "application/json"
     }
+
 
     for i in b:
         ##determine what location in the patron leader field for the following
@@ -108,6 +113,7 @@ def parse():
                 print(delta)
             #else:
                 #write to create api
+            #try/catch (maintain error array throughout and output array/error log to email body)
 
 
         # ##https://github.com/requests/requests/blob/master/requests/status_codes.py
@@ -125,6 +131,7 @@ def parse():
 
         ##do i need another elif for error logging?
         ## some requests seem to be hanging; may need to cleanup those requests
+
 
 
 def loop():  ##loop for testing the response time update api
@@ -148,4 +155,7 @@ def loop():  ##loop for testing the response time update api
 
     ##on average, this writes 50 patrons in 40 seconds to the patron API
 
-#parse()
+#try:
+    #parse()
+#except:
+    #error
