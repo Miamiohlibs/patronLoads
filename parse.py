@@ -1,3 +1,7 @@
+#https://github.com/Miamiohlibs/patronLoads/blob/master/parse.py
+#file parses traditional data export from university data systems pre-formatted for import into Sierra ILS
+#includes extensive data modeling 
+
 import os, csv, requests, time
 import numpy as np
 from jsonschema import validate  #use to validate each array slice writing to api
