@@ -1,3 +1,4 @@
+#Created by Craig Boman at Miami University Libraries
 #https://github.com/Miamiohlibs/patronLoads/blob/master/parse.py
 #file parses traditional data export from university data systems pre-formatted for import into Sierra ILS
 #includes extensive data modeling 
