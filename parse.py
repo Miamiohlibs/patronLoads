@@ -140,7 +140,7 @@ def parse():
 
 
 def loop():  ##loop for testing the response time update api
-    url = "https://holmes.lib.miamioh.edu:443/iii/sierra-api/v4/patrons/1306450"
+    url = "https://holmes.lib.miamioh.edu:443/iii/sierra-api/v4/patrons/######"
     #patron = {}
 
     looperCPU = 10
